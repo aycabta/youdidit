@@ -1,0 +1,20 @@
+doctype 5
+html
+  head
+    meta charset="UTF-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    - if @title.nil?
+      title YouDidIt!?
+    - else
+      title #{@title} - YouDidIt!?
+    link rel="stylesheet" href="/main.css"
+  body
+    - if @title.nil?
+      h1 YouDidIt!?
+    - else
+      h1 #{@title}
+    #content
+      == yield
+
+      hr class="great-separate"
+      p = "Powered by #{RUBY_DESCRIPTION}, YouDidIt!?"

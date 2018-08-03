@@ -14,3 +14,7 @@ configure :test, :development do
   DataMapper.setup(:default, 'yaml:///tmp/wisha')
   database_upgrade!
 end
+
+get '/' do
+  slim :index
+end
