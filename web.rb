@@ -23,6 +23,22 @@ get '/' do
   slim :index
 end
 
+get '/new_menu' do
+  @title = 'new menu'
+  slim :new_menu
+end
+
+post '/add_menu' do
+  me = User.first(:user_id => session[:user_id])
+  menu = Menu.create(
+    name: params[:name],
+    span_type: params[:span_type],
+    user: me,
+    created_at: DateTime.now
+  )
+  redirect '/', 302
+end
+
 get '/auth/:provider/callback' do
   auth = request.env['omniauth.auth']
   user = User.first(user_id: auth['uid'].to_i)

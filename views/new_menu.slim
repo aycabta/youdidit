@@ -1,0 +1,6 @@
+form action="/add_menu" method="POST"
+  select name="span_type"
+    - Menu::Span::Name.each_pair do |value, name|
+      option value="#{value}" = name
+  input type="text" name="name"
+  input type="submit" value="Add menu"
