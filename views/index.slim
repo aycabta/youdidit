@@ -1,0 +1,6 @@
+- if @me
+  p You are logging in.
+  form action="/logout" method="POST"
+    input type="submit" value="logout"
+- else
+  a href="/auth/github" = "Log-in with GitHub for botization"
