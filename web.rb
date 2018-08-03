@@ -12,7 +12,7 @@ configure :production do
 end
 
 configure :test, :development do
-  DataMapper.setup(:default, 'yaml:///tmp/wisha')
+  DataMapper.setup(:default, 'yaml:///tmp/youdidit')
   database_upgrade!
 end
 
