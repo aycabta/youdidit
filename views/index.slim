@@ -4,17 +4,24 @@
   ul
     - for menu in @me.menus
       li
-        form class="menu-line" action="/add_result" method="POST"
-          input type="hidden" name="menu_id" value="#{menu.id}"
-          input type="hidden" name="state" value="#{Result::State::Did}"
-          input type="hidden" name="worked_at" value="#{Date.today}"
-          input type="submit" value="Did"
-        form class="menu-line" action="/add_result" method="POST"
-          input type="hidden" name="menu_id" value="#{menu.id}"
-          input type="hidden" name="state" value="#{Result::State::Completed}"
-          input type="hidden" name="worked_at" value="#{Date.today}"
-          input type="submit" value="Completed"
-        p class="menu-line" = menu.name
+        - if result = menu.result_by_date(@date)
+          p class="menu-line" = result.state_name
+          form class="menu-line" action="/del_result" method="POST"
+            input type="hidden" name="result_id" value="#{result.id}"
+            input type="submit" value="Reset"
+          p class="menu-line" = menu.name
+        - else
+          form class="menu-line" action="/add_result" method="POST"
+            input type="hidden" name="menu_id" value="#{menu.id}"
+            input type="hidden" name="state" value="#{Result::State::Did}"
+            input type="hidden" name="worked_at" value="#{Date.today}"
+            input type="submit" value="Did"
+          form class="menu-line" action="/add_result" method="POST"
+            input type="hidden" name="menu_id" value="#{menu.id}"
+            input type="hidden" name="state" value="#{Result::State::Completed}"
+            input type="hidden" name="worked_at" value="#{Date.today}"
+            input type="submit" value="Completed"
+          p class="menu-line" = menu.name
 
   hr class="great-separate"
 

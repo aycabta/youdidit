@@ -50,6 +50,14 @@ post '/add_result' do
   redirect '/', 302
 end
 
+post '/del_result' do
+  #menu = Menu.first(id: params[:menu_id])
+  #result = menu.result_by_date(Date.parse(params[:date]))
+  result = Result.first(id: params[:result_id])
+  result.destroy
+  redirect '/', 302
+end
+
 get '/auth/:provider/callback' do
   auth = request.env['omniauth.auth']
   user = User.first(user_id: auth['uid'].to_i)
