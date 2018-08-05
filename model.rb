@@ -9,7 +9,7 @@ require_relative 'date_range'
 class User
   include DataMapper::Resource
   property :id, Serial
-  property :user_id, Decimal, precision: 20, required: true
+  property :user_id, Integer, precision: 20, required: true
   property :email, String, length: 256, required: true
   property :name, String, length: 256, required: true
   property :nickname, String, length: 256, required: true
