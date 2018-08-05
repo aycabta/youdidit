@@ -18,7 +18,7 @@ end
 
 get '/' do
   if session[:logged_in]
-    @me = User.first(:user_id => session[:user_id])
+    @me = User.first(user_id: session[:user_id])
     @date = Date.today
   end
   slim :index
@@ -30,7 +30,7 @@ get '/new_menu' do
 end
 
 post '/add_menu' do
-  me = User.first(:user_id => session[:user_id])
+  me = User.first(user_id: session[:user_id])
   menu = Menu.create(
     name: params[:name],
     span_type: params[:span_type],
@@ -85,10 +85,10 @@ configure do
   enable :sessions
   set :session_secret, ENV["SESSION_SECRET"]
   use Rack::Session::Cookie,
-    :key => 'rack.session',
-    :path => '/',
-    :expire_after => 60 * 60 * 24 * 90,
-    :secret => ENV['SESSION_SECRET']
+    key: 'rack.session',
+    path: '/',
+    expire_after: 60 * 60 * 24 * 90,
+    secret: ENV['SESSION_SECRET']
   use OmniAuth::Builder do
     provider :github, ENV['CLIENT_ID'], ENV['CLIENT_SECRET']
   end
