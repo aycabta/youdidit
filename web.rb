@@ -4,7 +4,8 @@ require 'slim'
 require 'omniauth'
 require 'omniauth-github'
 require 'uri'
-require './model'
+require_relative 'model'
+require_relative 'date_range'
 
 configure :production do
   DataMapper.setup(:default, ENV['DATABASE_URL'])
@@ -16,10 +17,24 @@ configure :test, :development do
   database_upgrade!
 end
 
-get '/' do
+helpers DateRange
+
+def redirect_to_index(date = nil)
+  if date
+    redirect "/date/#{date}", 302
+  else
+    redirect '/', 302
+  end
+end
+
+get ['/', '/date/:date'] do
   if session[:logged_in]
     @me = User.first(user_id: session[:user_id])
-    @date = Date.today
+    if params[:date]
+      @date = Date.parse(params[:date])
+    else
+      @date = Date.today
+    end
   end
   slim :index
 end
@@ -62,12 +77,13 @@ end
 
 post '/add_result' do
   menu = Menu.first(id: params[:menu_id])
+  worked_at = Date.parse(params[:worked_at])
   result = Result.create(
     menu: menu,
     state: params[:state],
-    worked_at: params[:worked_at]
+    worked_at: worked_at
   )
-  redirect '/', 302
+  redirect_to_index(worked_at)
 end
 
 post '/del_result' do
@@ -75,7 +91,8 @@ post '/del_result' do
   #result = menu.result_by_date(Date.parse(params[:date]))
   result = Result.first(id: params[:result_id])
   result.destroy
-  redirect '/', 302
+  date = Date.parse(params[:date])
+  redirect_to_index(date)
 end
 
 get '/auth/:provider/callback' do

@@ -4,6 +4,7 @@ require 'dm-migrations'
 require 'tempfile'
 require 'open-uri'
 require 'date'
+require_relative 'date_range'
 
 class User
   include DataMapper::Resource
@@ -13,10 +14,32 @@ class User
   property :name, String, length: 256, required: true
   property :nickname, String, length: 256, required: true
   has n, :menus
+
+  def daily_menus
+    @daily ||= Menu.all(
+      user: self,
+      span_type: Menu::Span::Daily
+    )
+  end
+
+  def weekly_menus
+    @weekly ||= Menu.all(
+      user: self,
+      span_type: Menu::Span::Weekly
+    )
+  end
+
+  def monthly_menus
+    @monthly ||= Menu.all(
+      user: self,
+      span_type: Menu::Span::Monthly
+    )
+  end
 end
 
 class Menu
   include DataMapper::Resource
+  include DateRange
   module Span
     Daily = 0
     Weekly = 1
@@ -37,11 +60,14 @@ class Menu
   belongs_to :user, required: true
   has n, :results
 
-  def result_by_date(date)
-    if @result_by_date
-      @result_by_date
-    else
-      @result_by_date = Result.first(menu: self, worked_at: date)
+  def result_by_span(date)
+    case span_type
+    when Span::Daily
+      Result.first(menu: self, worked_at: date)
+    when Span::Weekly
+      Result.first(menu: self, worked_at: week_range(date))
+    when Span::Monthly
+      Result.first(menu: self, worked_at: month_range(date))
     end
   end
 end
