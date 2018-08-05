@@ -1,0 +1,13 @@
+form action="/del_menu/#{@menu.id}" method="POST"
+  input type="submit" value="Delete menu"
+
+form action="/update_menu/#{@menu.id}" method="POST"
+  select name="span_type"
+    - Menu::Span::Name.each_pair do |value, name|
+      - if value == @menu.span_type
+        option value="#{value}" selected="" = name
+      - else
+        option value="#{value}" = name
+  input type="text" name="name" value=@menu.name
+  input type="submit" value="Update menu"
+

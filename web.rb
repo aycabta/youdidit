@@ -40,6 +40,26 @@ post '/add_menu' do
   redirect '/', 302
 end
 
+get '/edit_menu/:id' do
+  @menu = Menu.first(id: params[:id])
+  slim :edit_menu
+end
+
+post '/update_menu/:id' do
+  menu = Menu.first(id: params[:id])
+  menu.update(
+    name: params[:name],
+    span_type: params[:span_type]
+  )
+  redirect '/', 302
+end
+
+post '/del_menu/:id' do
+  menu = Menu.first(id: params[:id])
+  menu.destroy
+  redirect '/', 302
+end
+
 post '/add_result' do
   menu = Menu.first(id: params[:menu_id])
   result = Result.create(
