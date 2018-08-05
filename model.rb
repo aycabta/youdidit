@@ -3,6 +3,7 @@ require 'dm-core'
 require 'dm-migrations'
 require 'tempfile'
 require 'open-uri'
+require 'date'
 
 class User
   include DataMapper::Resource
@@ -31,9 +32,43 @@ class Menu
   end
   property :id, Serial
   property :name, String, length: 256, required: true
-  property :span_type, Decimal, required: true
+  property :span_type, Integer, required: true
   property :created_at, DateTime, required: true
   belongs_to :user, required: true
+  has n, :results
+
+  def result_by_date(date)
+    if @result_by_date
+      @result_by_date
+    else
+      @result_by_date = Result.first(menu: self, worked_at: date)
+    end
+  end
+end
+
+class Result
+  include DataMapper::Resource
+  module State
+    Nothing = 0
+    Did = 1
+    Completed = 2
+    def self.list
+      [Nothing, Did, Completed]
+    end
+    Name = {
+      Nothing => 'Nothing',
+      Did => 'Did',
+      Completed => 'Completed'
+    }
+  end
+  property :id, Serial
+  property :state, Integer, required: true
+  property :worked_at, Date, required: true
+  belongs_to :menu, required: true
+
+  def state_name
+    State::Name[state]
+  end
 end
 
 DataMapper.finalize
@@ -41,4 +76,5 @@ DataMapper.finalize
 def database_upgrade!
   User.auto_upgrade!
   Menu.auto_upgrade!
+  Result.auto_upgrade!
 end

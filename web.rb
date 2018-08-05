@@ -19,6 +19,7 @@ end
 get '/' do
   if session[:logged_in]
     @me = User.first(:user_id => session[:user_id])
+    @date = Date.today
   end
   slim :index
 end
@@ -35,6 +36,16 @@ post '/add_menu' do
     span_type: params[:span_type],
     user: me,
     created_at: DateTime.now
+  )
+  redirect '/', 302
+end
+
+post '/add_result' do
+  menu = Menu.first(id: params[:menu_id])
+  result = Result.create(
+    menu: menu,
+    state: params[:state],
+    worked_at: params[:worked_at]
   )
   redirect '/', 302
 end

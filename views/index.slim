@@ -1,5 +1,23 @@
 - if @me
-  p You are logging in.
+  a href="/new_menu" = "Add menu"
+  p = @date
+  ul
+    - for menu in @me.menus
+      li
+        form class="menu-line" action="/add_result" method="POST"
+          input type="hidden" name="menu_id" value="#{menu.id}"
+          input type="hidden" name="state" value="#{Result::State::Did}"
+          input type="hidden" name="worked_at" value="#{Date.today}"
+          input type="submit" value="Did"
+        form class="menu-line" action="/add_result" method="POST"
+          input type="hidden" name="menu_id" value="#{menu.id}"
+          input type="hidden" name="state" value="#{Result::State::Completed}"
+          input type="hidden" name="worked_at" value="#{Date.today}"
+          input type="submit" value="Completed"
+        p class="menu-line" = menu.name
+
+  hr class="great-separate"
+
   form action="/logout" method="POST"
     input type="submit" value="logout"
 - else
