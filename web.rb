@@ -87,8 +87,6 @@ post '/add_result' do
 end
 
 post '/del_result' do
-  #menu = Menu.first(id: params[:menu_id])
-  #result = menu.result_by_date(Date.parse(params[:date]))
   result = Result.first(id: params[:result_id])
   result.destroy
   date = Date.parse(params[:date])
