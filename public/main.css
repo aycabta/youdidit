@@ -7,3 +7,8 @@
 body {
     background-image: url("billhook.png");
 }
+
+.menu-line {
+    display: inline;
+    margin-right: 0.5em;
+}
