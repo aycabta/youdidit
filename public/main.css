@@ -9,6 +9,21 @@
     margin-right: 0.5em;
 }
 
+h3 {
+    margin-bottom: 0em;
+}
+
+ul.vicinity-nav {
+    margin: 0em;
+    padding: 0em;
+}
+
+ul.vicinity-nav li {
+    display: inline;
+    margin: 0em 0.5em 0em 0em;
+    padding: 0em;
+}
+
 html {
     background-image: url("billhook.png");
 }

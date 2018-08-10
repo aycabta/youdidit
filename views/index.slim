@@ -3,19 +3,19 @@
   h2 = @date
   - unless @me.daily_menus.empty?
     h3 Daily(#{@date})
-    ul
+    ul.vicinity-nav
       li: a href="/date/#{@date + 1}" prev
       li: a href="/date/#{@date + 1}" next
     == slim :_menu_list, locals: { menus: @me.daily_menus }
   - unless @me.weekly_menus.empty?
     h3 Weekly(#{week_range(@date)})
-    ul
+    ul.vicinity-nav
       li: a href="/date/#{@date + 7}" prev
       li: a href="/date/#{@date + 7}" next
     == slim :_menu_list, locals: { menus: @me.weekly_menus }
   - unless @me.monthly_menus.empty?
     h3 Monthly(#{month_range(@date)})
-    ul
+    ul.vicinity-nav
       li: a href="/date/#{@date.prev_month}" prev
       li: a href="/date/#{@date.next_month}" next
     == slim :_menu_list, locals: { menus: @me.monthly_menus }
