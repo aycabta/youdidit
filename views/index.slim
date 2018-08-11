@@ -5,7 +5,8 @@
       - @me.each_week_of_weed(@date) do |monday, week_index|
         g transform="translate(#{week_index * 13}, 0)"
           - 7.times do |cw_index|
-            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @me.weed_cardinality(monday + cw_index)).to_i) * 3}"
+            - d = monday + cw_index
+            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @me.weed_cardinality(d)).to_i) * 3}" data-date="#{d.to_s}"
 
   p: a href="/new_menu" = "Add menu"
   h2 = @date
