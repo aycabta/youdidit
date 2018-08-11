@@ -57,7 +57,6 @@ class User
       end
     }.sum
     c / filled_weed_cardinality
-    #"#{c} #{filled_weed_cardinality} #{menus.inspect}"
   end
 
   def each_week_of_weed(date)
