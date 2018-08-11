@@ -35,6 +35,40 @@ class User
       span_type: Menu::Span::Monthly
     )
   end
+
+  def filled_weed_cardinality
+    @filled_weed_cardinality ||= menus.size * 2.0
+  end
+
+  def weed_cardinality(d)
+    c = menus.map { |m|
+      r = m.result_by_span(d)
+      if r
+        case r.state
+        when Result::State::Completed
+          2
+        when Result::State::Did
+          1
+        when Result::State::Nothing
+          0
+        end
+      else
+        0
+      end
+    }.sum
+    c / filled_weed_cardinality
+    #"#{c} #{filled_weed_cardinality} #{menus.inspect}"
+  end
+
+  def each_week_of_weed(date)
+    start_date = date.prev_year + 1
+    start_date -= (start_date.cwday - 1)
+    days = (date - start_date).to_i
+    weeks = (days / 7) + (days % 7 == 0 ? 0 : 1)
+    weeks.times do |index|
+      yield start_date + (7 * index), index
+    end
+  end
 end
 
 class Menu
