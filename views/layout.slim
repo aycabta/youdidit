@@ -10,7 +10,7 @@ html
     link rel="stylesheet" href="/main.css"
   body
     - if @title.nil?
-      h1 YouDidIt!?
+      h1: a href="/" YouDidIt!?
     - else
       h1 #{@title}
     #content
