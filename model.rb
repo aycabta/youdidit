@@ -36,11 +36,11 @@ class User
     )
   end
 
-  def filled_weed_cardinality
-    @filled_weed_cardinality ||= menus.size * 2.0
+  def abyss
+    @abyss ||= menus.size * 2.0
   end
 
-  def weed_cardinality(d)
+  def darkness_depth(d)
     c = menus.map { |m|
       r = m.result_by_span(d)
       if r
@@ -56,10 +56,10 @@ class User
         0
       end
     }.sum
-    c / filled_weed_cardinality
+    c / abyss
   end
 
-  def each_week_of_weed(date)
+  def each_week_of_darkness(date)
     start_date = date.prev_year + 1
     start_date -= (start_date.cwday - 1)
     days = (date - start_date).to_i
