@@ -37,7 +37,7 @@ class User
   end
 
   def abyss
-    @abyss ||= menus.size * 2.0
+    @abyss ||= menus.size
   end
 
   def darkness_depth(d)
@@ -56,7 +56,7 @@ class User
         0
       end
     }.sum
-    c / abyss
+    abyss.zero? ? 0 : c / abyss.to_f
   end
 
   def each_week_of_darkness(date)
