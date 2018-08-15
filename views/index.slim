@@ -1,12 +1,12 @@
 - if @me
 
   svg width="653" height="84"
-    g transform="translate(0, 0)"
+    g transform="translate(1, 1)"
       - @me.each_week_of_darkness(@date) do |monday, week_index|
         g transform="translate(#{week_index * 13}, 0)"
           - 7.times do |cw_index|
             - d = monday + cw_index
-            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @me.darkness_depth(d)).to_i) * 3}" data-date="#{d.to_s}"
+            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @me.darkness_depth(d)).to_i) * 3}" data-date="#{d.to_s}" stroke="#010101" stroke-width="0.1"
 
   p: a href="/new_menu" = "Add menu"
   h2 = @date
