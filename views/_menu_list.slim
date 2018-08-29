@@ -1,24 +1,27 @@
 ul
   - for menu in menus
     li
-      - if result = menu.result_by_span(@date)
-        p class="menu-line" = result.state_name
-        form class="menu-line" action="/del_result" method="POST"
-          input type="hidden" name="result_id" value="#{result.id}"
-          input type="hidden" name="date" value="#{@date}"
-          input type="submit" value="Reset"
-        p class="menu-line"
-          a href="/edit_menu/#{menu.id}" = menu.name
+      - if @me == @user
+        - if result = menu.result_by_span(@date)
+          p class="menu-line" = result.state_name
+          form class="menu-line" action="/del_result" method="POST"
+            input type="hidden" name="result_id" value="#{result.id}"
+            input type="hidden" name="date" value="#{@date}"
+            input type="submit" value="Reset"
+          p class="menu-line"
+            a href="/edit_menu/#{menu.id}" = menu.name
+        - else
+          form class="menu-line" action="/add_result" method="POST"
+            input type="hidden" name="menu_id" value="#{menu.id}"
+            input type="hidden" name="state" value="#{Result::State::Did}"
+            input type="hidden" name="worked_at" value="#{@date}"
+            input type="submit" value="Did"
+          form class="menu-line" action="/add_result" method="POST"
+            input type="hidden" name="menu_id" value="#{menu.id}"
+            input type="hidden" name="state" value="#{Result::State::Completed}"
+            input type="hidden" name="worked_at" value="#{@date}"
+            input type="submit" value="Completed"
+          p class="menu-line"
+            a href="/edit_menu/#{menu.id}" = menu.name
       - else
-        form class="menu-line" action="/add_result" method="POST"
-          input type="hidden" name="menu_id" value="#{menu.id}"
-          input type="hidden" name="state" value="#{Result::State::Did}"
-          input type="hidden" name="worked_at" value="#{@date}"
-          input type="submit" value="Did"
-        form class="menu-line" action="/add_result" method="POST"
-          input type="hidden" name="menu_id" value="#{menu.id}"
-          input type="hidden" name="state" value="#{Result::State::Completed}"
-          input type="hidden" name="worked_at" value="#{@date}"
-          input type="submit" value="Completed"
-        p class="menu-line"
-          a href="/edit_menu/#{menu.id}" = menu.name
+        p class="menu-line" = menu.name

@@ -19,6 +19,12 @@ end
 
 helpers DateRange
 
+helpers do
+  def generate_date_url(date)
+    %Q(/#{@specified_user ? @specified_user.nickname : 'date'}/#{date})
+  end
+end
+
 def redirect_to_index(date = nil)
   if date
     redirect "/date/#{date}", 302
@@ -30,6 +36,7 @@ end
 get ['/', '/date/:date'] do
   if session[:logged_in]
     @me = User.first(user_id: session[:user_id])
+    @user = @me
     if params[:date]
       @date = Date.parse(params[:date])
     else
@@ -118,6 +125,17 @@ end
 post '/logout' do
   session.clear
   redirect '/', 302
+end
+
+get ['/:username', '/:username/:date'] do
+  @me = User.first(user_id: session[:user_id]) if session[:logged_in]
+  @user = User.first(nickname: params[:username])
+  if params[:date]
+    @date = Date.parse(params[:date])
+  else
+    @date = Date.today
+  end
+  slim :index
 end
 
 configure do

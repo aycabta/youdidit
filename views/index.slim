@@ -2,32 +2,32 @@
 
   svg width="653" height="84"
     g transform="translate(1, 1)"
-      - @me.each_week_of_darkness(@date) do |monday, week_index|
+      - @user.each_week_of_darkness(@date) do |monday, week_index|
         g transform="translate(#{week_index * 13}, 0)"
           - 7.times do |cw_index|
             - d = monday + cw_index
-            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @me.darkness_depth(d)).to_i) * 3}" data-date="#{d.to_s}" stroke="#010101" stroke-width="0.1"
+            rect class="day" width="10" height="10" x="#{13 - week_index}" y="#{cw_index * 12}" fill="##{('%02x' % (255 - 255 * @user.darkness_depth(d)).to_i) * 3}" data-date="#{d.to_s}" stroke="#010101" stroke-width="0.1"
 
   p: a href="/new_menu" = "Add menu"
   h2 = @date
-  - unless @me.daily_menus.empty?
+  - unless @user.daily_menus.empty?
     h3 Daily(#{@date})
     ul.vicinity-nav
-      li: a href="/date/#{@date - 1}" prev
-      li: a href="/date/#{@date + 1}" next
-    == slim :_menu_list, locals: { menus: @me.daily_menus }
-  - unless @me.weekly_menus.empty?
+      li: a href="#{generate_date_url(@date - 1)}" prev
+      li: a href="#{generate_date_url(@date + 1)}" next
+    == slim :_menu_list, locals: { menus: @user.daily_menus }
+  - unless @user.weekly_menus.empty?
     h3 Weekly(#{week_range(@date)})
     ul.vicinity-nav
-      li: a href="/date/#{@date - 7}" prev
-      li: a href="/date/#{@date + 7}" next
-    == slim :_menu_list, locals: { menus: @me.weekly_menus }
-  - unless @me.monthly_menus.empty?
+      li: a href="#{generate_date_url(@date - 7)}" prev
+      li: a href="#{generate_date_url(@date + 7)}" next
+    == slim :_menu_list, locals: { menus: @user.weekly_menus }
+  - unless @user.monthly_menus.empty?
     h3 Monthly(#{month_range(@date)})
     ul.vicinity-nav
-      li: a href="/date/#{@date.prev_month}" prev
-      li: a href="/date/#{@date.next_month}" next
-    == slim :_menu_list, locals: { menus: @me.monthly_menus }
+      li: a href="#{generate_date_url(@date.prev_month)}" prev
+      li: a href="#{generate_date_url(@date.next_month)}" next
+    == slim :_menu_list, locals: { menus: @user.monthly_menus }
 
   hr class="great-separate"
 
