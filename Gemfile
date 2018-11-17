@@ -15,4 +15,4 @@ group :production do
   gem 'dm-postgres-adapter'
 end
 
-ruby '2.5.1'
+ruby '2.5.3'
